@@ -143,9 +143,8 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    # We plan on using just the access token for the time being and not create
-    # an endpoint for refreshing the access token for the time being. Therefore,
-    # keeping the access token lifetime long
+    # We don't plan to handle refreshing of access_token for now.
+    # Therefore, keeping the access token lifetime long.
     "ACCESS_TOKEN_LIFETIME": timedelta(days=30),
     "SIGNING_KEY": os.getenv("JWT_SIGNING_KEY"),
 }

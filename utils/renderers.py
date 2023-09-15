@@ -4,26 +4,26 @@ from rest_framework.response import Response
 
 class APIResponseRenderer(JSONRenderer):
     """
-    Renderer used to modify the structure of data to include a custom
+    Renderer used to modify the structure of response to include custom
     parameters like `message` and `successful`.
 
     The APIView class using this renderer should specify the `response_format`
     dictionary to make use of this renderer.
 
-    Items that can be present in the `response_format` are:
+    Keys that can be present in the `response_format` dictionary:
         1. success_message: str.
         2. error_message: str | None.
         3. success_data_key: str | None.
         4. error_data_key: str | None.
-        5. Any other item present in the dictionary would be picked up as it
-           is and added to the response.
+        5. Any other items present in the dictionary would be picked up as it
+           is and will be added to the response.
 
-    By default, the original data is stored in dictionary using `data` as key.
+    By default, the original data is stored in response dictionary using `data` as key.
     You can overide this behaviour by providing `success_data_key` and / or
     `error_data_key` value in `response_format`.
 
     Note: If `response_format` dictionary is not provided to the APIView class,
-    this renderer would work like `JSONRenderer`.
+    this renderer will work like `JSONRenderer`.
     """
 
     settings_key = "response_format"
@@ -61,9 +61,9 @@ class APIResponseRenderer(JSONRenderer):
 
         # Add rest of the additional data supplied
         for key, value in response_format.items():
-            # TODO: Check types using isInstance
             if key in config_keys:
                 continue
+            # TODO: Check types using isInstance
             final_data[key] = value
 
         # Finally adding the original data in the `data_key`
