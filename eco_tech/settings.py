@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
+from datetime import timedelta
 from dotenv import load_dotenv
 # Load environment variables
 load_dotenv()
@@ -43,6 +44,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
+    "apps.auth",
 ]
 
 MIDDLEWARE = [
@@ -129,3 +131,20 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework_simplejwt.authentication.JWTAuthentication"
+    ],
+    "DEFAULT_RENDERER_CLASSES": [
+        "utils.renderers.APIResponseRenderer",
+        "rest_framework.renderers.BrowsableAPIRenderer",
+    ]
+}
+
+SIMPLE_JWT = {
+    # We don't plan to handle refreshing of access_token for now.
+    # Therefore, keeping the access token lifetime long.
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=30),
+    "SIGNING_KEY": os.getenv("JWT_SIGNING_KEY"),
+}
